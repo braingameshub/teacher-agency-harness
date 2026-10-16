@@ -1,0 +1,101 @@
+{
+  "dataset": "Eedi Misconceptions Graph",
+  "graph_version": "v1.15.0",
+  "retrieved": "2026-10-16",
+  "dataset_page": "https://docs.learningcommons.org/knowledge-graph/datasets/learning-components/eedi-misconceptions-graph",
+  "nodes_url": "https://cdn.learningcommons.org/knowledge-graph/v1.15.0/exports/nodes.jsonl",
+  "edges_url": "https://cdn.learningcommons.org/knowledge-graph/v1.15.0/exports/relationships.jsonl",
+  "license": "https://creativecommons.org/licenses/by/4.0/",
+  "copyright": "Copyright 2026 Eedi Ltd",
+  "note": "Eight real hinders edges from the open graph. Kept when the misconception and the construct share a topic word, so a reviewer can see the link. Other real edges are not less valid. This is not the full graph and it is not a student record. The Kaggle competition files are not included.",
+  "pairs": [
+    {
+      "misconception_id": "3230ff86-19aa-5f9d-9e02-2fc44d29ee10",
+      "misconception": "Has incorrect beliefs concerning the definition of income tax",
+      "construct_id": "e8448f62-496a-5e32-9e97-a9692cf82f4e",
+      "construct": "Understand gross and net income",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "Knowledge Graph is provided by Learning Commons under the CC BY-4.0 license, available at https://creativecommons.org/licenses/by/4.0. \"Eedi Misconceptions Graph v1.0\" (c) 2026 Eedi Ltd., licensed under CC BY 4.0 and available at https://www.eedi.com.",
+      "author": "Eedi Ltd.",
+      "misconception_publisher_identifier": "18736",
+      "construct_publisher_identifier": "3665"
+    },
+    {
+      "misconception_id": "aac024f4-2c8f-520f-a4b4-baaba319a924",
+      "misconception": "Believes SAS congruence rule applies with only side information",
+      "construct_id": "f44f904b-51ab-5f9b-8906-be3ce2270d48",
+      "construct": "Identify by condition when triangles are not congruent",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "Knowledge Graph is provided by Learning Commons under the CC BY-4.0 license, available at https://creativecommons.org/licenses/by/4.0. \"Eedi Misconceptions Graph v1.0\" (c) 2026 Eedi Ltd., licensed under CC BY 4.0 and available at https://www.eedi.com.",
+      "author": "Eedi Ltd.",
+      "misconception_publisher_identifier": "28663",
+      "construct_publisher_identifier": "2632"
+    },
+    {
+      "misconception_id": "e7004674-6482-5c87-84eb-cf4944489245",
+      "misconception": "Confuses the inverse operations of addition and subtraction when rearranging equations",
+      "construct_id": "0504ce84-a6ed-50aa-8b91-d27510fbc657",
+      "construct": "Solve one-step linear equations requiring addition or subtraction, with all positive integers",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "Knowledge Graph is provided by Learning Commons under the CC BY-4.0 license, available at https://creativecommons.org/licenses/by/4.0. \"Eedi Misconceptions Graph v1.0\" (c) 2026 Eedi Ltd., licensed under CC BY 4.0 and available at https://www.eedi.com.",
+      "author": "Eedi Ltd.",
+      "misconception_publisher_identifier": "16382",
+      "construct_publisher_identifier": "1458"
+    },
+    {
+      "misconception_id": "27bbd32e-a604-5dd5-ac28-813a8473e753",
+      "misconception": "Believes that the denominator of a fraction represents the part being compared in a ratio, rather than the numerator",
+      "construct_id": "e5119895-c359-5c54-8419-5d26426110a9",
+      "construct": "Convert fractions to ratios",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "Knowledge Graph is provided by Learning Commons under the CC BY-4.0 license, available at https://creativecommons.org/licenses/by/4.0. \"Eedi Misconceptions Graph v1.0\" (c) 2026 Eedi Ltd., licensed under CC BY 4.0 and available at https://www.eedi.com.",
+      "author": "Eedi Ltd.",
+      "misconception_publisher_identifier": "22475",
+      "construct_publisher_identifier": "707"
+    },
+    {
+      "misconception_id": "37e1f91d-0744-58a1-94de-372546a22e9f",
+      "misconception": "Believes the line of best fit must pass through the point with the highest y-coordinate",
+      "construct_id": "4f39578d-3d81-5c0b-88c5-61ca2513d285",
+      "construct": "Draw a line of best fit on a scatter diagram",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "Knowledge Graph is provided by Learning Commons under the CC BY-4.0 license, available at https://creativecommons.org/licenses/by/4.0. \"Eedi Misconceptions Graph v1.0\" (c) 2026 Eedi Ltd., licensed under CC BY 4.0 and available at https://www.eedi.com.",
+      "author": "Eedi Ltd.",
+      "misconception_publisher_identifier": "28096",
+      "construct_publisher_identifier": "2875"
+    },
+    {
+      "misconception_id": "d3414a9d-3abe-5b3c-b149-748b7cccc3dd",
+      "misconception": "Confuses multiplication with finding the multiplier",
+      "construct_id": "ab06dda3-7e09-597f-b9a7-d38d1dfb8078",
+      "construct": "5 times table - multiplication facts",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "Knowledge Graph is provided by Learning Commons under the CC BY-4.0 license, available at https://creativecommons.org/licenses/by/4.0. \"Eedi Misconceptions Graph v1.0\" (c) 2026 Eedi Ltd., licensed under CC BY 4.0 and available at https://www.eedi.com.",
+      "author": "Eedi Ltd.",
+      "misconception_publisher_identifier": "18483",
+      "construct_publisher_identifier": "124"
+    },
+    {
+      "misconception_id": "42a72b47-26a4-5299-8616-bf285d314460",
+      "misconception": "Believes that x times the size of y means add x to y, confusing multiplicative and additive relationships",
+      "construct_id": "a97742a4-92ef-5d1a-8424-2405d8823544",
+      "construct": "Multiply integers by 100",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "Knowledge Graph is provided by Learning Commons under the CC BY-4.0 license, available at https://creativecommons.org/licenses/by/4.0. \"Eedi Misconceptions Graph v1.0\" (c) 2026 Eedi Ltd., licensed under CC BY 4.0 and available at https://www.eedi.com.",
+      "author": "Eedi Ltd.",
+      "misconception_publisher_identifier": "22459",
+      "construct_publisher_identifier": "62"
+    },
+    {
+      "misconception_id": "414ac204-d2e1-51ae-a9cf-6462c654cabf",
+      "misconception": "Believes that all ratios are in the form part-to-whole, not part-to-part",
+      "construct_id": "afb6b9d1-57dc-55f7-9ab5-3d81c29bc6b0",
+      "construct": "Given one side of a ratio, find the other side, supported by a tape diagram (US)",
+      "license": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "Knowledge Graph is provided by Learning Commons under the CC BY-4.0 license, available at https://creativecommons.org/licenses/by/4.0. \"Eedi Misconceptions Graph v1.0\" (c) 2026 Eedi Ltd., licensed under CC BY 4.0 and available at https://www.eedi.com.",
+      "author": "Eedi Ltd.",
+      "misconception_publisher_identifier": "22231",
+      "construct_publisher_identifier": "3770"
+    }
+  ]
+}

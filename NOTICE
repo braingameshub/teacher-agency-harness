@@ -1,0 +1,15 @@
+Teacher Agency Harness
+Copyright 2026 Advanced Learning Academy LLC
+
+This software is licensed under the Apache License, Version 2.0.
+The license text is in the LICENSE file.
+
+data/eedi_sample.json is not covered by the Apache License.
+It is an eight-pair excerpt of the Eedi Misconceptions Graph as published
+in the Learning Commons Knowledge Graph, version v1.15.0.
+Copyright 2026 Eedi Ltd. Licensed under CC BY 4.0.
+https://creativecommons.org/licenses/by/4.0/
+
+The attribution statement from the graph is stored on each pair.
+The excerpt is aggregated misconception text. It is not a student record.
+The Kaggle Eedi competition files are CC BY-NC 4.0 and are not included.
