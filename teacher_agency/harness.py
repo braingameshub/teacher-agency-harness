@@ -1,9 +1,9 @@
-"""One task: a named misconception in, a proposed next move out, teacher control.
+"""Named evidence in, a proposed next move out, teacher control.
 
 The move text is a deterministic template. A developer replaces
 `proposed_move` with their own model. The harness still shows the
-evidence, flags a move that drops the misconception or the construct,
-and records accept, edit, or stop. No student record is read or written.
+evidence, flags a move that drops a required name or repeats the previous
+move, and records accept, edit, or stop. No student record is read or written.
 """
 
 from teacher_agency.sample import load_sample
@@ -20,13 +20,15 @@ def proposed_move(misconception, construct):
 
 
 class Proposal:
-    def __init__(self, pair, next_move):
+    def __init__(self, pair, next_move, also_require=None, forbid_exact=None):
         self.misconception_id = pair["misconception_id"]
         self.misconception = pair["misconception"]
         self.construct_id = pair["construct_id"]
         self.construct = pair["construct"]
         self.attribution = pair["attribution"]
         self.license = pair["license"]
+        self.also_require = list(also_require or [])
+        self.forbid_exact = forbid_exact
         self.evidence = (
             f'Misconception: {self.misconception}. '
             f'This hinders the construct: {self.construct}.'
@@ -53,7 +55,16 @@ class Flag:
     def __init__(self, missing):
         self.missing = tuple(missing)
         self.flagged = bool(missing)
-        if self.flagged:
+        if self.missing == ("repeated move",):
+            self.reason = "The move repeats the previous move."
+        elif "repeated move" in self.missing:
+            others = [name for name in self.missing if name != "repeated move"]
+            self.reason = (
+                "The move repeats the previous move and does not name the "
+                + " and ".join(others)
+                + "."
+            )
+        elif self.flagged:
             names = " and ".join(self.missing)
             self.reason = f"The move does not name the {names}."
         else:
@@ -84,6 +95,12 @@ def flag_move(proposal, move_text):
         missing.append("misconception")
     if proposal.construct.casefold() not in text:
         missing.append("construct")
+    for label, required in getattr(proposal, "also_require", ()):
+        if required.casefold() not in text:
+            missing.append(label)
+    forbid = getattr(proposal, "forbid_exact", None)
+    if forbid and text.strip() == forbid.casefold().strip():
+        missing.append("repeated move")
     return Flag(missing)
 
 
@@ -100,11 +117,23 @@ class Harness:
     def list_ids(self):
         return list(self.by_id)
 
-    def propose(self, misconception_id):
-        pair = self.by_id.get(misconception_id)
-        if pair is None:
+    def pair(self, misconception_id):
+        found = self.by_id.get(misconception_id)
+        if found is None:
             raise KeyError(f"Unknown misconception id {misconception_id}")
+        return found
+
+    def propose(self, misconception_id):
+        pair = self.pair(misconception_id)
         return Proposal(pair, proposed_move(pair["misconception"], pair["construct"]))
+
+    def propose_text(self, misconception_id, move, also_require=None, forbid_exact=None):
+        return Proposal(
+            self.pair(misconception_id),
+            move,
+            also_require=also_require,
+            forbid_exact=forbid_exact,
+        )
 
     def first(self):
         return self.propose(self.list_ids()[0])

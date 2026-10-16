@@ -1,10 +1,10 @@
 # Teacher Agency Harness
 
-One task a developer can run. An Eedi misconception goes in. A proposed next move comes out. The teacher can accept it, edit it, or stop it.
+Four coordination skills a developer can run. An Eedi misconception goes in. A proposed next move comes out. The teacher can accept it, edit it, or stop it.
 
-This is the first slice of an open package for the K-12 AI Infrastructure Program request, Integrating Digital Public Goods to Advance AI-Enabled Formative Assessment. It is not an award, not a pilot, and not a score.
+This is the open package for the K-12 AI Infrastructure Program request, Integrating Digital Public Goods to Advance AI-Enabled Formative Assessment. It is not an award, not a pilot, and not a score.
 
-Code is Apache-2.0. The eight-pair data excerpt is CC BY 4.0, copyright 2026 Eedi Ltd. See NOTICE.
+Code is Apache-2.0. The eight-pair data excerpt is CC BY 4.0, copyright 2026 Eedi Ltd. The developer note, the benchmark specification, and the safety note are CC BY 4.0. See NOTICE.
 
 ## Run
 
@@ -15,25 +15,36 @@ py -3.12 -m teacher_agency
 py -3.12 -m teacher_agency --action accept
 py -3.12 -m teacher_agency --action edit --move "Your replacement"
 py -3.12 -m teacher_agency --action stop
+py -3.12 -m teacher_agency --task differentiate --teacher-input "Use a tape diagram"
+py -3.12 -m teacher_agency --task coordinate --stalled --prior-move "Assign another set of practice problems."
+py -3.12 -m teacher_agency --task check --action accept
 py -3.12 -m teacher_agency --demo-mismatch
 py -3.12 -m unittest discover -s tests -v
 ```
 
 No API key. No network call at run time. No install step.
 
-## What the task does
+## What the four skills do
 
-The shipped task is the first of the four coordination tasks in that request: adapt the next move from the named misconception.
+The skills are the four coordination tasks in that request.
 
-1. Evidence. The misconception, and the construct the graph says it hinders.
-2. Proposed next move. A fixed template that names both. A developer replaces `proposed_move` in `teacher_agency/harness.py` with their own model. The rest of the harness stays.
-3. Flag. If a move does not contain the misconception text and the construct text, the harness says so. This is a literal name check, not a judgment of teaching quality.
-4. Teacher control.
-   - Accept keeps the proposed move and proceeds.
-   - Edit proceeds with the teacher's text. If that text drops a name, the flag stays visible.
-   - Stop does not proceed.
+1. Adapt. The misconception, and the construct the graph says it hinders.
+2. Differentiate. The same pair, plus a line the teacher typed. A move that drops that line is flagged.
+3. Coordinate. Runs only when the teacher reports no progress and passes the previous move. The new move must not be that previous move. The harness does not infer a stall.
+4. Check. One shared check that names the construct and the misconception. Accept, edit, or stop is kept in memory for that run.
+
+On every skill:
+
+- Evidence is shown.
+- The proposed next move is a fixed template that names the misconception and the construct. A developer replaces `proposed_move` in `teacher_agency/harness.py` with their own model. The rest of the harness stays.
+- The flag is a literal name check, not a judgment of teaching quality.
+- Accept keeps the proposed move and proceeds.
+- Edit proceeds with the teacher's text. If that text drops a required name, the flag stays visible.
+- Stop does not proceed.
 
 An unguided move, "Assign another set of practice problems.", is flagged. The template move is not.
+
+`teacher_agency/adapter.py` loads the excerpt and refuses a NonCommercial, ShareAlike, or NoDerivatives license.
 
 ## Data
 
@@ -51,9 +62,13 @@ py -3.12 scripts/fetch_sample.py
 
 That download is about a gigabyte of graph files. The script keeps eight pairs and does not write the full files.
 
-## What this repository is not
+## What this repository does not do
 
-The other three tasks are not here. There is no benchmark score. There is no school count. There is no letter from a developer. No ALA assessment product is required to run it.
+It does not call Learning Commons standards, the Math Coherence Map, EssayJudge, or GSM8k. Those remain Phase 1 calls in the proposal. They are not wired here.
+
+There is no benchmark score. `docs/BENCHMARK-SPEC.md` defines the comparison and reports no number. There is no school count. There is no letter from a developer. No ALA assessment product is required to run it.
+
+The notes for a developer, the benchmark, and safety are in `docs/`.
 
 ## License
 

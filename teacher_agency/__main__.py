@@ -1,9 +1,12 @@
-"""Run one misconception through the harness.
+"""Run one of the four coordination skills.
 
 From the repo root:
 
     py -3.12 -m teacher_agency
     py -3.12 -m teacher_agency --action accept
+    py -3.12 -m teacher_agency --task differentiate --teacher-input "Use a tape diagram"
+    py -3.12 -m teacher_agency --task coordinate --stalled --prior-move "Assign another set of practice problems."
+    py -3.12 -m teacher_agency --task check --action accept
     py -3.12 -m teacher_agency --demo-mismatch
 """
 
@@ -12,13 +15,29 @@ import json
 import sys
 
 from teacher_agency.harness import UNGUIDED_MOVE, Harness
+from teacher_agency.tasks import TASKS, run_task
+
+TASK_LABEL = {
+    "adapt": "adapt the next move from a named misconception",
+    "differentiate": "differentiate the next move using the teacher's own input",
+    "coordinate": "coordinate a new move when the teacher reports no progress",
+    "check": "set one shared improvement check and record the teacher's decision",
+}
 
 
 def main(argv=None):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-    parser = argparse.ArgumentParser(description="One-task Teacher Agency Harness")
+    parser = argparse.ArgumentParser(description="Teacher Agency Harness")
     parser.add_argument("--id", help="Misconception id. Defaults to the first shipped pair.")
     parser.add_argument("--list", action="store_true", help="List the shipped misconception ids.")
+    parser.add_argument("--task", choices=TASKS, default="adapt")
+    parser.add_argument("--teacher-input", help="Required for --task differentiate. The teacher's own words.")
+    parser.add_argument(
+        "--stalled",
+        action="store_true",
+        help="Required for --task coordinate. The teacher reports that the student is not progressing.",
+    )
+    parser.add_argument("--prior-move", help="Required for --task coordinate. The previous move.")
     parser.add_argument("--action", choices=("accept", "edit", "stop"))
     parser.add_argument("--move", help="Replacement move text. Required with --action edit.")
     parser.add_argument("--demo-mismatch", action="store_true", help="Show the flag on an unguided move.")
@@ -32,25 +51,39 @@ def main(argv=None):
             print(f"{item}  {proposal.misconception}")
         return 0
 
-    proposal = harness.propose(args.id) if args.id else harness.first()
+    try:
+        result = run_task(
+            args.task,
+            harness,
+            misconception_id=args.id,
+            teacher_input=args.teacher_input,
+            stalled=True if args.stalled else False,
+            prior_move=args.prior_move,
+            action=None if args.demo_mismatch else args.action,
+            edited_move=args.move,
+        )
+    except (ValueError, KeyError) as exc:
+        print(str(exc), file=sys.stderr)
+        return 2
+
     if args.demo_mismatch:
-        flag = harness.check(proposal, UNGUIDED_MOVE)
+        flag = harness.check(result.proposal, UNGUIDED_MOVE)
         payload = {
+            "task": result.task,
             "unguided_move": UNGUIDED_MOVE,
             "flagged": flag.flagged,
             "reason": flag.reason,
-            "evidence": proposal.evidence,
+            "evidence": result.proposal.evidence,
         }
         _emit(payload, args.json, _mismatch_text(payload))
         return 0
 
-    if args.action:
-        decision = harness.decide(proposal, args.action, args.move)
-        payload = {"proposal": proposal.as_dict(), "decision": decision.as_dict()}
-        _emit(payload, args.json, _decision_text(proposal, decision))
+    if result.decision is not None:
+        payload = {"task": result.as_dict(), "decision": result.decision.as_dict()}
+        _emit(payload, args.json, _decision_text(result, result.decision))
         return 0
 
-    _emit(proposal.as_dict(), args.json, _proposal_text(proposal))
+    _emit(result.as_dict(), args.json, _proposal_text(result))
     return 0
 
 
@@ -61,11 +94,12 @@ def _emit(payload, as_json, text):
         print(text)
 
 
-def _proposal_text(proposal):
+def _proposal_text(result):
+    proposal = result.proposal
     return "\n".join(
         [
             "Teacher Agency Harness",
-            "Task: adapt the next move from a named misconception.",
+            f"Task: {TASK_LABEL[result.task]}.",
             "",
             "Evidence",
             proposal.evidence,
@@ -81,21 +115,23 @@ def _proposal_text(proposal):
             proposal.license,
             "",
             "Teacher control: py -3.12 -m teacher_agency --action accept",
-            "Or --action edit --move \"...\"    Or --action stop",
+            'Or --action edit --move "..."    Or --action stop',
         ]
     )
 
 
-def _decision_text(proposal, decision):
+def _decision_text(result, decision):
     lines = [
+        f"Task: {TASK_LABEL[result.task]}.",
         f"Decision: {decision.status}",
         f"Proceeds: {'yes' if decision.proceeds else 'no'}",
+        "Stored student record: no",
     ]
     if decision.move:
         lines.extend(["", "Move that stands", decision.move])
     if decision.flag is not None:
         lines.extend(["", "Flag", decision.flag.reason])
-    lines.extend(["", "Evidence", proposal.evidence])
+    lines.extend(["", "Evidence", result.proposal.evidence])
     return "\n".join(lines)
 
 
